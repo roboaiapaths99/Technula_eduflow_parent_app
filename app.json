@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FFFFFF"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.technula.eduflow"
@@ -52,6 +47,12 @@
           "color": "#2563EB"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9f28f5c8-478e-41f6-9f04-868c6a13d150"
+      }
+    },
+    "owner": "roboaiapaths"
   }
 }
