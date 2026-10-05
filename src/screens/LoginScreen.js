@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { parentApi, formatUserError, getSavedSchool, clearSavedSchool } from '../api';
 import { theme } from '../theme';
 import SchoolSelectScreen from './SchoolSelectScreen';
+import PrivacyPolicyModal from '../components/PrivacyPolicyModal';
 
 export default function LoginScreen({ onLoginSuccess }) {
   // School Discovery State
@@ -24,6 +25,10 @@ export default function LoginScreen({ onLoginSuccess }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [detectedStudents, setDetectedStudents] = useState([]);
   const [confirmingPrimary, setConfirmingPrimary] = useState(false);
+
+  // Legal & Privacy Policy Modal State
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [legalTab, setLegalTab] = useState('privacy');
 
   // Check for saved school on launch
   useEffect(() => {
@@ -277,11 +282,31 @@ export default function LoginScreen({ onLoginSuccess }) {
           )}
         </View>
 
-        {/* Security Trust Footer */}
+        {/* Security Trust & Legal Compliance Footer */}
         <View style={styles.trustFooter}>
           <Text style={styles.trustFooterText}>🔒 Official School Portal • Encrypted Session</Text>
+          <View style={styles.legalLinksRow}>
+            <TouchableOpacity onPress={() => { setLegalTab('privacy'); setShowPrivacyModal(true); }}>
+              <Text style={styles.legalLinkText}>Privacy Policy</Text>
+            </TouchableOpacity>
+            <Text style={styles.legalDot}>•</Text>
+            <TouchableOpacity onPress={() => { setLegalTab('terms'); setShowPrivacyModal(true); }}>
+              <Text style={styles.legalLinkText}>Terms</Text>
+            </TouchableOpacity>
+            <Text style={styles.legalDot}>•</Text>
+            <TouchableOpacity onPress={() => { setLegalTab('deletion'); setShowPrivacyModal(true); }}>
+              <Text style={styles.legalLinkText}>Data Safety</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
+
+      {/* Google Play Verified Privacy Policy & Data Deletion Modal */}
+      <PrivacyPolicyModal
+        visible={showPrivacyModal}
+        onClose={() => setShowPrivacyModal(false)}
+        initialTab={legalTab}
+      />
 
       {/* Primary Mobile Confirmation Modal */}
       <Modal visible={showConfirmModal} transparent animationType="fade">
@@ -580,11 +605,28 @@ const styles = StyleSheet.create({
   trustFooter: {
     marginTop: 20,
     alignItems: 'center',
+    gap: 8,
   },
   trustFooterText: {
     fontSize: 11,
     color: '#94A3B8',
     fontWeight: '600',
+  },
+  legalLinksRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 2,
+  },
+  legalLinkText: {
+    fontSize: 11,
+    color: theme.colors.primary,
+    fontWeight: '700',
+    textDecorationLine: 'underline',
+  },
+  legalDot: {
+    fontSize: 10,
+    color: '#94A3B8',
   },
   modalBackdrop: {
     flex: 1,

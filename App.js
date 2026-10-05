@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  StatusBar, Image, ActivityIndicator, Modal, ScrollView, LogBox
+  StatusBar, Image, ActivityIndicator, Modal, ScrollView, LogBox, Alert
 } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { theme } from './src/theme';
@@ -38,6 +38,7 @@ import ProfileEditScreen from './src/screens/ProfileEditScreen';
 import LinkChildModal from './src/components/LinkChildModal';
 import NotificationCenterModal from './src/components/NotificationCenterModal';
 import HeadsUpBanner from './src/components/HeadsUpBanner';
+import PrivacyPolicyModal from './src/components/PrivacyPolicyModal';
 import { registerForPushNotificationsAsync, setupNotificationListeners, triggerLocalHeadsUpNotification } from './src/services/notificationService';
 
 function AppContent() {
@@ -56,6 +57,10 @@ function AppContent() {
   const [bannerVisible, setBannerVisible] = useState(false);
   const [bannerData, setBannerData] = useState({ title: '', message: '', data: {} });
   const lastSeenNotifTs = useRef(null);
+
+  // Google Play Compliance & Legal Modals
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [legalTab, setLegalTab] = useState('privacy');
 
   // 1. Check for persisted authentication on startup
   useEffect(() => {
@@ -207,6 +212,32 @@ function AppContent() {
     setChildren([]);
     setActiveChild(null);
     setActiveTab('home');
+  };
+
+  const handleRequestAccountDeletion = () => {
+    Alert.alert(
+      'Request Account Deletion',
+      'In accordance with Google Play data safety policies, submitting this request will initiate the removal of your parent account, push notification tokens, and personal settings. Are you sure you wish to proceed?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Request Deletion',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await parentApi.requestAccountDeletion('User initiated via mobile app settings');
+              Alert.alert(
+                'Request Received',
+                'Your account deletion request has been submitted to the administration. Your session will now be logged out.',
+                [{ text: 'OK', onPress: handleLogout }]
+              );
+            } catch (err) {
+              Alert.alert('Request Failed', err.message || 'Unable to submit request at this time.');
+            }
+          }
+        }
+      ]
+    );
   };
 
   if (initLoading) {
@@ -608,9 +639,33 @@ function AppContent() {
                 <Text style={styles.moreCardSub}>Connect sibling profile</Text>
               </TouchableOpacity>
 
-              <View style={{ marginTop: 20, marginBottom: 20, alignItems: 'center', width: '100%' }}>
-                <Text style={{ fontSize: 12, fontWeight: '700', color: theme.colors.textMuted }}>
-                  {activeChild?.school_name || 'School Management System'}
+              <TouchableOpacity
+                style={styles.moreCard}
+                onPress={() => { setLegalTab('privacy'); setShowPrivacyModal(true); }}
+              >
+                <Text style={styles.moreCardIcon}>🛡️</Text>
+                <Text style={styles.moreCardTitle}>Privacy & Data Safety</Text>
+                <Text style={styles.moreCardSub}>Google Play verified policies</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.moreCard, { borderColor: '#FEE2E2', backgroundColor: '#FFF5F5' }]}
+                onPress={handleRequestAccountDeletion}
+              >
+                <Text style={styles.moreCardIcon}>🗑️</Text>
+                <Text style={[styles.moreCardTitle, { color: '#DC2626' }]}>Delete Account & Data</Text>
+                <Text style={styles.moreCardSub}>Purge user profile & session</Text>
+              </TouchableOpacity>
+
+              <View style={{ marginTop: 24, marginBottom: 20, alignItems: 'center', width: '100%', gap: 4 }}>
+                <Text style={{ fontSize: 13, fontWeight: '800', color: theme.colors.textDark }}>
+                  Technula EduFlow
+                </Text>
+                <Text style={{ fontSize: 11, fontWeight: '600', color: theme.colors.textMuted }}>
+                  Version 1.0.0 • Production Build 1
+                </Text>
+                <Text style={{ fontSize: 11, color: theme.colors.textMuted }}>
+                  {activeChild?.school_name || 'Certified School Operating System'}
                 </Text>
               </View>
             </View>
@@ -774,6 +829,13 @@ function AppContent() {
           }
         }}
         onDismiss={() => setBannerVisible(false)}
+      />
+
+      {/* Google Play Verified Privacy Policy & Data Deletion Modal */}
+      <PrivacyPolicyModal
+        visible={showPrivacyModal}
+        onClose={() => setShowPrivacyModal(false)}
+        initialTab={legalTab}
       />
     </SafeAreaView>
   );

@@ -18,7 +18,7 @@ const DEFAULT_API = Platform.select({
 });
 
 // Production fallback for Technula EduFlow Google Play release builds
-const PROD_API = 'https://technulaeduflow.technula.com/api';
+const PROD_API = 'https://eduflow.technula.com/api';
 
 // You can override this by setting EXPO_PUBLIC_API_BASE in .env (e.g. http://192.168.1.12:8000)
 let API_BASE = (process.env.EXPO_PUBLIC_API_BASE && process.env.EXPO_PUBLIC_API_BASE.trim() !== '')
@@ -34,8 +34,8 @@ export function getApiBase() {
 }
 
 // ── Token & User Persistence ───────────────────────────
-const TOKEN_KEY = 'insights_auth_token';
-const USER_KEY = 'insights_auth_user';
+const TOKEN_KEY = 'technulaeduflow_auth_token';
+const USER_KEY = 'technulaeduflow_auth_user';
 
 let authToken = null;
 let currentUser = null;
@@ -82,7 +82,7 @@ export async function clearAuth() {
 }
 
 // ── Selected School Persistence ───────────────────────
-const SELECTED_SCHOOL_KEY = 'insights_selected_school';
+const SELECTED_SCHOOL_KEY = 'technulaeduflow_selected_school';
 
 export async function saveSelectedSchool(school) {
   try {
@@ -218,7 +218,7 @@ export function setOnAuthExpired(cb) {
 }
 
 // ── HTTP Request Helper with Offline Cache Fallback ──
-const CACHE_PREFIX = 'insights_cache:';
+const CACHE_PREFIX = 'technulaeduflow_cache:';
 
 async function request(path, options = {}) {
   const isGet = !options.method || options.method === 'GET';
@@ -355,6 +355,12 @@ export const parentApi = {
     request('/parent-profile/request-phone-change', {
       method: 'POST',
       body: JSON.stringify({ new_phone: newPhone, reason }),
+    }),
+
+  requestAccountDeletion: (reason = 'User requested account closure') =>
+    request('/parent-profile/request-account-deletion', {
+      method: 'POST',
+      body: JSON.stringify({ reason }),
     }),
 
   // ── Notifications ──
