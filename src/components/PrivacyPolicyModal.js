@@ -88,7 +88,7 @@ export default function PrivacyPolicyModal({ visible, onClose, initialTab = 'pri
 
               <Text style={styles.subHeading}>5. Contact Our Data Protection Officer</Text>
               <Text style={styles.paragraph}>
-                If you have questions regarding your data or wish to exercise your rights, email us at <Text style={styles.linkText} onPress={() => Linking.openURL('mailto:privacy@technula.com')}>privacy@technula.com</Text> or visit our public portal at <Text style={styles.linkText} onPress={() => Linking.openURL('https://technulaeduflow.technula.com/privacy')}>https://technulaeduflow.technula.com/privacy</Text>.
+                If you have questions regarding your data or wish to exercise your rights, email us at <Text style={styles.linkText} onPress={() => Linking.openURL('mailto:sales@technula.com')}>sales@technula.com</Text> or visit our public portal at <Text style={styles.linkText} onPress={() => Linking.openURL('https://technulaeduflow.technula.com/privacy')}>https://technulaeduflow.technula.com/privacy</Text>.
               </Text>
             </View>
           )}
@@ -143,7 +143,7 @@ export default function PrivacyPolicyModal({ visible, onClose, initialTab = 'pri
                 1. Navigate to <Text style={styles.bold}>Menu → Guardian Profile → Request Account Deletion</Text> within the app.
               </Text>
               <Text style={styles.paragraph}>
-                2. Alternatively, submit a deletion request via email to <Text style={styles.linkText} onPress={() => Linking.openURL('mailto:privacy@technula.com?subject=Account%20Deletion%20Request')}>privacy@technula.com</Text> or visit <Text style={styles.linkText} onPress={() => Linking.openURL('https://technulaeduflow.technula.com/privacy')}>https://technulaeduflow.technula.com/privacy</Text>.
+                2. Alternatively, submit a deletion request via email to <Text style={styles.linkText} onPress={() => Linking.openURL('mailto:sales@technula.com?subject=Account%20Deletion%20Request')}>sales@technula.com</Text> or visit <Text style={styles.linkText} onPress={() => Linking.openURL('https://technulaeduflow.technula.com/privacy')}>https://technulaeduflow.technula.com/privacy</Text>.
               </Text>
             </View>
           )}
