@@ -127,16 +127,13 @@ export function isPlanRestrictedError(err) {
   const lower = String(raw).toLowerCase();
   return (
     lower.includes('plan upgrade') ||
-    lower.includes('not included in your') ||
-    lower.includes('not available in your') ||
+    lower.includes('not included in your plan') ||
+    lower.includes('not available in your plan') ||
     lower.includes('trial has expired') ||
     lower.includes('subscription has expired') ||
     lower.includes('starter plan') ||
     lower.includes('renew your plan') ||
-    lower.includes('not activated') ||
-    lower.includes('not enabled') ||
-    lower.includes('contact the school office') ||
-    lower.includes('school administration yet') ||
+    lower.includes('module has not been activated') ||
     lower.includes('requires a plan upgrade')
   );
 }
@@ -155,6 +152,11 @@ export function formatUserError(err, fallback = 'Something went wrong. Please tr
   if (typeof msg !== 'string') return fallback;
 
   const lower = msg.toLowerCase().trim();
+
+  // Student Not Found
+  if (lower.includes('no student records') || lower.includes('no student record') || lower.includes('verify your number')) {
+    return 'No student records found for this mobile number at this school. Please verify your registered 10-digit number.';
+  }
 
   // 0. Subscription Plan & Module Activation
   if (isPlanRestrictedError(msg)) {
