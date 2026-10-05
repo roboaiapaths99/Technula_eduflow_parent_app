@@ -18,7 +18,7 @@ const DEFAULT_API = Platform.select({
 });
 
 // Production fallback for Technula EduFlow Google Play release builds
-const PROD_API = 'https://eduflow.technula.com/api';
+const PROD_API = 'https://technulaeduflow.technula.com/api';
 
 // You can override this by setting EXPO_PUBLIC_API_BASE in .env (e.g. http://192.168.1.12:8000)
 let API_BASE = (process.env.EXPO_PUBLIC_API_BASE && process.env.EXPO_PUBLIC_API_BASE.trim() !== '')

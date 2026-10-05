@@ -13,7 +13,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_BASE": "https://eduflow.technula.com/api"
+        "EXPO_PUBLIC_API_BASE": "https://technulaeduflow.technula.com/api"
       }
     },
     "production": {
@@ -21,7 +21,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_API_BASE": "https://eduflow.technula.com/api"
+        "EXPO_PUBLIC_API_BASE": "https://technulaeduflow.technula.com/api"
       }
     }
   },
